@@ -44,8 +44,8 @@
                         Ninguno
                     {% endif %}
                 </td>
-                <td>{{ ep.fecha_creacion|date:"Y-m-d H:i" }}</td>
-                <td>{{ ep.fecha_actualizacion|date:"Y-m-d H:i" }}</td>
+                <td>{{ ep.fecha_creacion|date:"Y-m-d H:i" }}</td> <!--Importante tener esto-->
+                <td>{{ ep.fecha_actualizacion|date:"Y-m-d H:i" }}</td> <!--y tambien esto-->
                 <td>
                     <a href="/editarEventoPatrocinador/{{ ep.id }}" class="btn btn-outline-warning">
                         <i class="fa fa-pen"></i>
