@@ -72,7 +72,7 @@ def procesarEdicionEvento(request):
     messages.success(request, "Evento ACTUALIZADO exitosamente")
     return redirect('/listarEvento')
 
-#Patrocinador
+#Tabla de Patrocinador
 
 def listarPatrocinador(request):
     patrocinadores = Patrocinador.objects.all()
