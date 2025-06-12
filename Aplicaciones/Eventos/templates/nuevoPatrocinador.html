@@ -1,0 +1,76 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light p-4 rounded">
+        <h1>Nuevo Patrocinador</h1>
+        <form action="/guardarPatrocinador/" id="frm_nuevo_patrocinador" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+
+            <label for="nombre">Nombre:</label>
+            <input placeholder="Ingrese el nombre del Patrocinador" class="form-control" type="text" name="nombre" id="nombre"> <br>
+
+            <label for="industria">Industria:</label>
+            <input placeholder="Ingrese la industria" class="form-control" type="text" name="industria" id="industria"> <br>
+
+            <label for="logo_patrocinador">Logo del Patrocinador:</label>
+            <input type="file" name="logo_patrocinador" id="logo_patrocinador" class="form-control"> <br>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/listarPatrocinador/">Cancelar</a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#logo_patrocinador").fileinput({
+        allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        theme: "fa",
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta la imagen aquí …"
+    });
+
+    $("#frm_nuevo_patrocinador").validate({
+        rules: {
+            "nombre": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "industria": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "logo_patrocinador": {
+                required: true,
+                extension: "jpg|jpeg|png|gif"
+            }
+        },
+        messages: {
+            "nombre": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "industria": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "logo_patrocinador": {
+                required: "Este campo es obligatorio",
+                extension: "Solo se permiten archivos de imagen (jpg, jpeg, png, gif)"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

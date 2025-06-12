@@ -1,0 +1,108 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light p-4 rounded">
+        <h1>Editar Patrocinio de Evento</h1>
+        <form action="/procesarEdicionEventoPatrocinador/" id="frm_editar_evento_patrocinador" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ ep.id }}">
+
+            <label for="evento_id">Evento:</label><br>
+            <select name="evento_id" id="evento_id" class="form-control">
+                <option value="">-- Seleccione un Evento --</option>
+                {% for evento in eventos %}
+                    <option value="{{ evento.id }}" {% if evento.id == ep.evento.id %}selected{% endif %}>
+                        {{ evento.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <label for="patrocinador_id">Patrocinador:</label><br>
+            <select name="patrocinador_id" id="patrocinador_id" class="form-control">
+                <option value="">-- Seleccione un Patrocinador --</option>
+                {% for patrocinador in patrocinadores %}
+                    <option value="{{ patrocinador.id }}" {% if patrocinador.id == ep.patrocinador.id %}selected{% endif %}>
+                        {{ patrocinador.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <input type="number" name="aporte_economico" id="aporte_economico" class="form-control" value="{{ ep.aporte_economico|floatformat:0 }}">
+            <br>
+
+            <label for="pdf_contrato">Contrato PDF:</label><br>
+            <input type="file" name="pdf_contrato" id="pdf_contrato" class="form-control" accept=".pdf"> <br>
+            {% if ep.pdf_contrato %}
+                <a href="{{ ep.pdf_contrato.url }}" target="_blank" class="btn btn-sm btn-success">Ver Contrato Actual</a>
+            {% else %}
+                Ninguno
+            {% endif %}
+            <br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+            <a class="btn btn-outline-danger" href="/listarEventoPatrocinador/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_evento_patrocinador").validate({
+        rules: {
+            "evento_id": {
+                required: true
+            },
+            "patrocinador_id": {
+                required: true
+            },
+            "aporte_economico": {
+                required: true,
+                number: true,
+                min: 250,
+                max: 50000
+            },
+            "pdf_contrato": {
+                extension: "pdf"
+            }
+        },
+        messages: {
+            "evento_id": {
+                required: "Debe seleccionar un evento"
+            },
+            "patrocinador_id": {
+                required: "Debe seleccionar un patrocinador"
+            },
+            "aporte_economico": {
+                required: "Este campo es obligatorio",
+                number: "Ingrese un número válido",
+                min: "El aporte debe de ser mas de 250 dolares",
+                max: "El aporte no debe de ser mas de 50 mil dolares"
+            },
+            "pdf_contrato": {
+                extension: "Solo se permite archivo .pdf"
+            }
+        }
+    });
+
+    $("#pdf_contrato").fileinput({
+        allowedFileExtensions: ["pdf"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta el archivo PDF aquí …"
+    });
+</script>
+
+{% endblock %}

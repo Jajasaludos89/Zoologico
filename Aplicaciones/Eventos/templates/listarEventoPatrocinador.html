@@ -1,0 +1,103 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<br>
+<h1 class="text-center">Listado de Patrocinios de Eventos</h1>
+<hr>
+
+<div class="row">
+    <div class="text-end">
+        <a href="/nuevoEventoPatrocinador/" class="btn btn-info text-right">
+            Agregar Patrocinio
+        </a>
+    </div>
+</div>
+<br>
+<table class="table table-bordered table-striped table-hover" id="tbl_eventos_patrocinadores">
+    <thead>
+        <tr class="bg-primary">
+            <th>ID</th>
+            <th>Evento</th>
+            <th>Patrocinador</th>
+            <th>Aporte Económico</th>
+            <th>Contrato PDF</th>
+            <th>Fecha de Creación</th>
+            <th>Última Actualización</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ep in eventos_patrocinadores %}
+            <tr>
+                <td>{{ ep.id }}</td>
+                <td>{{ ep.evento.nombre }}</td>
+                <td>{{ ep.patrocinador.nombre }}</td>
+                <td>${{ ep.aporte_economico }}</td>
+                <td>
+                    {% if ep.pdf_contrato %}
+                        <a href="{{ ep.pdf_contrato.url }}" target="_blank" class="btn btn-sm btn-success">
+                            Ver Contrato
+                        </a><br><br>
+                        <a href="{{ ep.pdf_contrato.url }}" download class="btn btn-sm btn-outline-secondary mt-1">
+                            Descargar
+                        </a>
+                    {% else %}
+                        Ninguno
+                    {% endif %}
+                </td>
+                <td>{{ ep.fecha_creacion|date:"Y-m-d H:i" }}</td>
+                <td>{{ ep.fecha_actualizacion|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="/editarEventoPatrocinador/{{ ep.id }}" class="btn btn-outline-warning">
+                        <i class="fa fa-pen"></i>
+                    </a>
+                    <a href="#" 
+                       data-id="{{ ep.id }}" 
+                       class="btn btn-outline-danger btnEliminar">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const botonesEliminar = document.querySelectorAll('.btnEliminar');
+
+        botonesEliminar.forEach(boton => {
+            boton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/eliminarEventoPatrocinador/${id}/`;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+  const table = new DataTable('#tbl_eventos_patrocinadores', {
+    layout: {
+      topStart: {
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+      }
+    }
+  });
+</script>
+
+<br><br><br><br><br><br>
+{% endblock %}

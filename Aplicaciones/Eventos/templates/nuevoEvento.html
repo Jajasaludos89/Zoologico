@@ -1,0 +1,108 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light p-4 rounded">
+        <h1>Nuevo Evento</h1>
+        <form action="/guardarEvento/" id="frm_nuevo_evento" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+
+            <label for="nombre">Nombre:</label>
+            <input placeholder="Ingrese el nombre del Evento" class="form-control" type="text" name="nombre" id="nombre"> <br>
+
+            <label for="fecha">Fecha:</label>
+            <input class="form-control" type="date" name="fecha" id="fecha"> <br>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea placeholder="Ingrese la descripción del evento" class="form-control" name="descripcion" id="descripcion" rows="5"></textarea> <br>
+
+            <label for="foto_evento">Foto del Evento:</label>
+            <input type="file" name="foto_evento" id="foto_evento" class="form-control"> <br>
+
+            <label for="pdf_programa">Programa PDF:</label>
+            <input type="file" name="pdf_programa" id="pdf_programa" class="form-control"> <br>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/listarEvento/">Cancelar</a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#foto_evento").fileinput({
+        allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        theme: "fa",
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta la imagen aquí …"
+    });
+
+    $("#pdf_programa").fileinput({
+        allowedFileExtensions: ["pdf"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        theme: "fa",
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta el archivo PDF aquí …"
+    });
+
+    $("#frm_nuevo_evento").validate({
+        rules: {
+            "nombre": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "fecha": {
+                required: true,
+                date: true
+            },
+            "descripcion": {
+                required: true,
+                minlength: 5
+            
+            },
+            "foto_evento": {
+                required: true,
+                extension: "jpg|jpeg|png|gif"
+            },
+            "pdf_programa": {
+                required: true,
+                extension: "pdf"
+            }
+        },
+        messages: {
+            "nombre": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "fecha": {
+                required: "Este campo es obligatorio",
+                date: "Ingrese una fecha válida"
+            },
+            "descripcion": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 5 caracteres"
+            },
+            "foto_evento": {
+                required: "Este campo es obligatorio",
+                extension: "Solo se permiten archivos de imagen (jpg, jpeg, png, gif)"
+            },
+            "pdf_programa": {
+                required: "Debe subir un archivo PDF",
+                extension: "Solo se permite formato .pdf"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

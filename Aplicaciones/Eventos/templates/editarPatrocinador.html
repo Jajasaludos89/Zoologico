@@ -1,0 +1,88 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light p-4 rounded">
+        <h1>Editar Patrocinador</h1>
+        <form action="/procesarEdicionPatrocinador/" id="frm_editar_patrocinador" method="post" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ patrocinador.id }}">
+
+            <label for="nombre">Nombre:</label><br>
+            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ patrocinador.nombre }}"> <br><br>
+
+            <label for="industria">Industria:</label><br>
+            <input class="form-control" type="text" name="industria" id="industria" value="{{ patrocinador.industria }}"> <br><br>
+
+            <label for="logo_patrocinador">Logo del Patrocinador:</label><br>
+            <input type="file" name="logo_patrocinador" id="logo_patrocinador" class="form-control" accept="image/*"> <br>
+            {% if patrocinador.logo_patrocinador %}
+                <img src="{{ patrocinador.logo_patrocinador.url }}" alt="Logo actual" width="150px" height="100px">
+            {% else %}
+                Ninguno
+            {% endif %}
+            <br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+
+            <a class="btn btn-outline-danger" href="/listarPatrocinador/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_patrocinador").validate({
+        rules: {
+            "nombre": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "industria": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "logo_patrocinador": {
+                extension: "jpg|jpeg|png|gif"
+            }
+        },
+        messages: {
+            "nombre": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "industria": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "logo_patrocinador": {
+                extension: "Solo se permiten archivos de imagen (jpg, jpeg, png, gif)"
+            }
+        }
+    });
+</script>
+
+<script>
+    $("#logo_patrocinador").fileinput({
+        allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta la imagen aquí …"
+    });
+</script>
+
+{% endblock %}

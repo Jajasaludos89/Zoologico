@@ -1,0 +1,123 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light p-4 rounded">
+        <h1>Editar Evento</h1>
+        <form action="/procesarEdicionEvento/" id="frm_editar_evento" method="post" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ evento.id }}">
+
+            <label for="nombre">Nombre:</label><br>
+            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ evento.nombre }}"> <br><br>
+
+            <label for="fecha">Fecha:</label><br>
+            <input class="form-control" type="date" name="fecha" id="fecha" value="{{ evento.fecha|date:'Y-m-d' }}"> <br><br>
+
+            <label for="descripcion">Descripción:</label><br>
+            <textarea class="form-control" name="descripcion" id="descripcion" rows="5">{{ evento.descripcion }}</textarea> <br><br>
+
+            <label for="foto_evento">Foto del Evento:</label><br>
+            <input type="file" name="foto_evento" id="foto_evento" class="form-control" accept="image/*"> <br>
+            {% if evento.foto_evento %}
+                <img src="{{ evento.foto_evento.url }}" alt="Foto actual" width="150px" height="100px">
+            {% else %}
+                Ninguna
+            {% endif %}
+            <br><br>
+
+            <label for="pdf_programa">Programa PDF:</label><br>
+            <input type="file" name="pdf_programa" id="pdf_programa" class="form-control" accept=".pdf"> <br>
+            {% if evento.pdf_programa %}
+                <a href="{{ evento.pdf_programa.url }}" target="_blank" class="btn btn-sm btn-success">Ver PDF actual</a>
+            {% else %}
+                Ninguno
+            {% endif %}
+            <br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+
+            <a class="btn btn-outline-danger" href="/listarEvento/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_evento").validate({
+        rules: {
+            "nombre": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "fecha": {
+                required: true,
+                date: true
+            },
+            "descripcion": {
+                required: true,
+                minlength: 5
+            },
+            "pdf_programa": {
+                extension: "pdf"
+            },
+            "foto_evento": {
+                extension: "jpg|jpeg|png|gif"
+            }
+        },
+        messages: {
+            "nombre": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 3 caracteres",
+                maxlength: "Máximo 100 caracteres permitidos"
+            },
+            "fecha": {
+                required: "Este campo es obligatorio",
+                date: "Ingrese una fecha válida"
+            },
+            "descripcion": {
+                required: "Este campo es obligatorio",
+                minlength: "Ingrese al menos 5 caracteres"
+            },
+            "pdf_programa": {
+                extension: "Solo se permite archivo .pdf"
+            },
+            "foto_evento": {
+                extension: "Solo se permiten archivos de imagen (jpg, jpeg, png, gif)"
+            }
+        }
+    });
+</script>
+
+<script>
+    $("#foto_evento").fileinput({
+        allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta la imagen aquí …"
+    });
+
+    $("#pdf_programa").fileinput({
+        allowedFileExtensions: ["pdf"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false,
+        browseLabel: "Seleccionar",
+        removeLabel: "Eliminar",
+        uploadLabel: "Subir",
+        dropZoneTitle: "Arrastra y suelta el archivo PDF aquí …"
+    });
+</script>
+
+{% endblock %}
