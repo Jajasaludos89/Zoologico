@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    #
+
     path('', views.listarEvento),
     path('listarEvento/', views.listarEvento),
     path('nuevoEvento/', views.nuevoEvento),
@@ -11,7 +11,6 @@ urlpatterns = [
     path('editarEvento/<int:id>/', views.editarEvento),
     path('procesarEdicionEvento/', views.procesarEdicionEvento),
 
-    # URLs para Patrocinador
     path('listarPatrocinador/', views.listarPatrocinador),
     path('nuevoPatrocinador/', views.nuevoPatrocinador),
     path('guardarPatrocinador/', views.guardarPatrocinador),
@@ -19,7 +18,6 @@ urlpatterns = [
     path('editarPatrocinador/<int:id>/', views.editarPatrocinador),
     path('procesarEdicionPatrocinador/', views.procesarEdicionPatrocinador),
 
-    # URLs para EventoPatrocinador
     path('listarEventoPatrocinador/', views.listarEventoPatrocinador),
     path('nuevoEventoPatrocinador/', views.nuevoEventoPatrocinador),
     path('guardarEventoPatrocinador/', views.guardarEventoPatrocinador),
