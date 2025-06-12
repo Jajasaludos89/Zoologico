@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Evento, Patrocinador, EventoPatrocinador
 
-#Evento
+#Tabla Evento
 
 def listarEvento(request):
     eventos = Evento.objects.all()
