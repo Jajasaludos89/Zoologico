@@ -20,6 +20,8 @@ class EventoPatrocinador(models.Model):
     patrocinador = models.ForeignKey('Patrocinador', on_delete=models.CASCADE)
     aporte_economico = models.DecimalField(max_digits=15, decimal_places=2)
     pdf_contrato = models.FileField(upload_to='eventos/contratos', null=True, blank=True)
+
+    #Este es sumamente importante
     
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
