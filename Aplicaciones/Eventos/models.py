@@ -24,4 +24,4 @@ class EventoPatrocinador(models.Model):
     #Este es sumamente importante
     
     fecha_creacion = models.DateTimeField(auto_now_add=True) #se hace de forma automatica
-    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True) #esto lo dejamos igual para hacerse de forma automatica
