@@ -149,7 +149,7 @@ def guardarEventoPatrocinador(request):
         evento = Evento.objects.get(id=evento_id)
         patrocinador = Patrocinador.objects.get(id=patrocinador_id)
 
-        EventoPatrocinador.objects.create( #el punto clave es el create
+        EventoPatrocinador.objects.create(  #la actualizacion se hace atraves del uso de create
             evento=evento,
             patrocinador=patrocinador,
             aporte_economico=aporte_economico,
@@ -195,7 +195,7 @@ def procesarEdicionEventoPatrocinador(request):
                 os.remove(ep.pdf_contrato.path)
             ep.pdf_contrato = pdf_contrato
 
-        ep.save()  #aqui es donde se hace el cambio
+        ep.save()  #aqui tambien se hace la actualizacion pero al momento de editar
         messages.success(request, "Patrocinio ACTUALIZADO exitosamente")
 
     return redirect('/listarEventoPatrocinador')
